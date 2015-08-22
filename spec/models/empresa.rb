@@ -5,8 +5,8 @@ RSpec.describe Empresa, :type => :model do
 		describe ".search" do
 			before do
 				@despacho = FactoryGirl.create(:despacho)
-				FactoryGirl.create(:empresa, despacho_id: @despacho.id)
-				FactoryGirl.create(:empresa_megaprestaciones, despacho_id: @despacho.id)
+				@tegik = FactoryGirl.create(:empresa, despacho_id: @despacho.id)
+				@megaprestaciones = FactoryGirl.create(:empresa_megaprestaciones, despacho_id: @despacho.id)
 			end
 			context "when no params are present" do
 				it "returns all records" do
@@ -31,10 +31,16 @@ RSpec.describe Empresa, :type => :model do
 					expect(Empresa.search(params).count).to eq 1
 				end
 			end
-			context "where active is present" do
+			context "when active is present" do
 				let(:params) {{ active: true }}
 				it "returns two records" do
 					expect(Empresa.search(params).count).to eq 2
+				end
+			end
+			context "when sortBy is present" do
+				let(:params) {{sortBy: "name", sortAscending: "true"}}
+				it "returns megaprestaciones at first" do
+					expect(Empresa.search(params).first.id).to eq @megaprestaciones.id
 				end
 			end
 		end

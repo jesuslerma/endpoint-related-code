@@ -33,6 +33,7 @@ class EmpresaSearcher
   def query_string(sort_by, asc)
     query_string = "#{sort_by} asc"
     query_string = "#{sort_by} desc" if !param_is_true?(asc)
+    query_string
   end
   def sort(empresas, query)
     empresas.order(query)
